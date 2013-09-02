@@ -47,9 +47,9 @@
           collect (string-to-number (car (last (caddr node)))))))
 
 (defun devel-cover--parse-html (html)
-  (let ((buf (find-file-noselect html)))
-    (with-current-buffer buf
-      (libxml-parse-html-region (point-min) (point-max)))))
+  (with-temp-buffer
+    (insert-file-contents-literally html)
+    (libxml-parse-html-region (point-min) (point-max))))
 
 (defun devel-cover--match-html (db-dir target)
   (let ((htmls (directory-files db-dir t "\\.html\\'"))
