@@ -21,3 +21,10 @@ Un-highlight C0 lines
 #### `devel-cover-unhighlight-region`
 
 Un-highlight specified region
+
+
+## faces
+
+#### `devel-cover-c0-line`
+
+face of c0 line
