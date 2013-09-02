@@ -90,7 +90,7 @@
     (devel-cover--highlight-lines lines)))
 
 ;;;###autoload
-(defun devel-cover-unhighlight (beg end)
+(defun devel-cover-unhighlight-region (beg end)
   (interactive "r")
   (remove-overlays beg end 'devel-cover t))
 
