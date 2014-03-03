@@ -1,10 +1,11 @@
 ;;; devel-cover.el --- highlight line C0 lines with Devel::Cover
 
-;; Copyright (C) 2013 by Syohei YOSHIDA
+;; Copyright (C) 2014 by Syohei YOSHIDA
 
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-devel-cover
 ;; Version: 0.01
+;; Package-Requires: ((cl-lib "0.5"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -25,8 +26,7 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl))
+(require 'cl-lib)
 
 (defgroup devel-cover nil
   "Highligh C0 lines"
@@ -40,11 +40,11 @@
 (defun devel-cover--collect-c0 (nodes)
   (let* ((body-node (assoc-default 'body (cdr nodes)))
          (table-node (nth 7 body-node)))
-    (loop for node in (cdddr table-node)
-          for statement-info = (cadddr node)
-          for class = (assoc-default 'class (cadr (caddr statement-info)))
-          when (string= class "c0")
-          collect (string-to-number (car (last (caddr node)))))))
+    (cl-loop for node in (cdddr table-node)
+             for statement-info = (cadddr node)
+             for class = (assoc-default 'class (cadr (caddr statement-info)))
+             when (string= class "c0")
+             collect (string-to-number (car (last (caddr node)))))))
 
 (defun devel-cover--parse-html (html)
   (with-temp-buffer
@@ -54,9 +54,9 @@
 (defun devel-cover--match-html (db-dir target)
   (let ((htmls (directory-files db-dir t "\\.html\\'"))
         (pattern (concat target ".html")))
-    (loop for html in htmls
-          when (string-match pattern html)
-          return html)))
+    (cl-loop for html in htmls
+             when (string-match pattern html)
+             return html)))
 
 (defun devel-cover--search-db-directory (basedir)
   (let ((db-dir (locate-dominating-file basedir "cover_db")))
